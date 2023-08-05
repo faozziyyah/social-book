@@ -1,0 +1,7 @@
+#wrapper{
+    background-color: rgb(33, 27, 46);
+}
+
+form{
+    display: flex;
+}

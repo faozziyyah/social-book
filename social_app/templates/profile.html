@@ -1,0 +1,181 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<title>Profile - {{user_profile.user.username}}</title>
+
+	<style>
+
+		body{
+			background-color: #1e0d49;
+		}
+
+		main{
+			background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('../static/images/IMG_20210426_031056.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+			display: flex;
+			flex-direction: column;
+			width: 70%;
+			height: 100vh;
+			margin: auto;
+		}
+
+		header {	
+			background-color: #474683;	
+			/*height: 400px; */
+			display: flex;
+			margin: auto;
+			margin-top: 20em;
+			justify-content: space-between;
+			text-align: center;
+			padding: 1em;
+		}
+
+		header > img {
+			align-self: flex-end;
+			height: 200px;
+			width: 15%;
+			box-shadow: 5px 5px 5px black;
+		}
+
+		form {
+			align-self: flex-end;
+		}
+
+		li{
+			list-style-type: none;
+		}
+
+		article {
+			background-color: #e0dfdf;
+			display: flex;
+			flex-direction: column;
+		}
+
+		aside, article > h1{
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			width: 80%;
+			margin: auto;
+		}
+
+		section {
+			background-color: transparent;
+			box-shadow: 5px 5px 5px 5px black;
+			display: flex;
+			justify-content: space-between;
+			width: 60%;
+			margin: auto;
+			margin-bottom: 2em;
+			margin-top: 1em;
+		}
+    
+	</style>
+
+</head>
+<body>
+
+	<main>
+
+		<header class="">
+
+			<img src="{{user_profile.profileimg.url}}" alt="">
+	
+			<form action="/follow" method="POST">
+				{% csrf_token %}
+	
+				<div class="add-btn">
+	
+					<span style="font-size: 27px; margin-right: 520px;">
+						<b><a style="color: white; text-decoration: none;" href="/index">Home</a></b>
+					</span>
+					
+					{% if user_post_length == 0 %}
+					<span style="color: white; font-size: 20px; margin-right: 20px;">
+						<b>No Post</b>
+					</span>
+					{% elif user_post_length == 1 %}
+					<span style="color: white; font-size: 20px; margin-right: 20px;">
+						<b>{{user_post_length}} Post</b>
+					</span>
+					{% else %}
+					<span style="color: white; font-size: 20px; margin-right: 20px;">
+						<b>{{user_post_length}} Posts</b>
+					</span>
+					{% endif %}
+	
+					{% if user_followers == 0 or user_followers == 1 %}
+					<span style="color: white; font-size: 20px; margin-right: 20px;">
+						<b>{{user_followers}} follower</b>
+					</span>
+					{% else %}
+					<span style="color: white; font-size: 20px; margin-right: 20px;">
+						<b>{{user_followers}} followers</b>
+					</span>
+					{% endif %}
+	
+					<span style="color: white; font-size: 20px; margin-right: 20px;">
+						<b>{{user_following}} following</b>
+					</span>
+	
+					<input type="hidden" value="{{user.username}}" name="follower" />
+					<input type="hidden" value="{{user_object.username}}" name="user" />
+					
+					{% if user_object.username == user.username %}
+					<a href="/settings"  style="color: white; text-decoration: none;">Account Settings</a>
+					{% else %}
+					<a data-ripple="">
+						<button type="submit" style="background-color: #ffc0cb; padding: 5px; border-radius: 3px; border: #ffc0cb;">{{button_text}}</button>
+					</a>
+					{% endif %}
+				</div>
+	
+			</form>
+	
+		</header>
+	
+		<article>
+	
+			<aside>
+				<h3 style="color: black; text-transform: capitalize; font-size: 27px;">{{user_profile.user.username}}</h3>
+				<p> <b>About:</b> {{user_profile.bio}}</p>
+				<p> <b>Location:</b> {{user_profile.location}}</p>
+			</aside>
+	
+			<h1>Posts Created...</h1>	
+	
+			<section>	
+		
+				{% for post in user_posts %}
+					<li>
+						<a class="strip" href="{{post.image.url}}" title="" data-strip-group="mygroup" data-strip-group-options="loop: false">
+							<img src="{{post.image.url}}" style="height: 250px; width: 300px;" alt="">
+						</a>
+					</li>
+				{% endfor %}
+	
+			</section>
+	
+		</article>
+		
+
+	</main>
+	
+	<script data-cfasync="false" src="{% static '../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script><script src="{% static 'js/main.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+
+</body>	
+
+
+</html>
